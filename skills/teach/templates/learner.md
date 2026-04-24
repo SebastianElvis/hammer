@@ -6,6 +6,12 @@ This file tracks what you know, what you're working on, and what tripped you up.
 
 _(Empty. The topic you pick in your first session goes here.)_
 
+## Goal
+
+One sentence: what you want to be able to *do* once you understand the current topic. Set during calibration; paired with `Currently studying` — when the topic shifts, replace both together. Downstream modes (tutoring and arc planning) read this to calibrate what is worth emphasizing.
+
+_(Empty.)_
+
 ## Known solid
 
 Things you've retrieved correctly on multiple occasions, including after a gap. The tutor will use these as foundations to build on and as analogies when teaching new material.
@@ -24,8 +30,8 @@ Confidently-held beliefs that turned out to be wrong. These are high-value entri
 
 _(Empty.)_
 
-## Diagnostic summaries
+## Calibration notes
 
-One-line notes from diagnostic runs. Useful to see how your self-assessment has shifted over time.
+One-line notes from calibration runs. Useful to see how your self-assessment has shifted over time.
 
 _(Empty.)_

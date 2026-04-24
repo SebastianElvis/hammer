@@ -38,14 +38,18 @@ State lives **outside this skill directory** in a folder the learner owns. This 
 
 1. Read `$TEACH_HOME/learner.md` — the learner's profile: what they know, what is shaky, misconceptions previously caught, what they are currently studying.
 2. Read `$TEACH_HOME/review.md` — the bucket-based review queue (see `references/review-buckets.md`).
-3. Create or open today's session log at `$TEACH_HOME/sessions/YYYY-MM-DD.md`. Append to this file as the session progresses — at minimum record topic, mode, key turns, what got stuck, what moved between buckets.
+3. Read `$TEACH_HOME/syllabus.md` if it exists — the agreed arc for the current topic. When present, it names the next-due item and what is explicitly out of scope. The planning modes (`propose-plan`, `revise-plan`) author this file; tutoring sessions only read it and mark progress.
+4. Create or open today's session log at `$TEACH_HOME/sessions/YYYY-MM-DD.md`. Append to this file as the session progresses — at minimum record topic, mode, key turns, what got stuck, what moved between buckets.
 
 Then decide what to do:
 
-- **No learner profile yet, or profile is mostly empty** → run diagnostic mode (`modes/diagnostic.md`) to calibrate before teaching anything.
-- **Items in the `learning` bucket of `review.md`** → start with a brief drill (`modes/drill.md`) before new material. One or two items, not an onslaught.
-- **Continuing a topic from `learner.md` "Currently studying"** → resume in the appropriate mode.
-- **New topic the user just named** → pick a mode (default Socratic) and begin.
+- **Empty profile, or new topic with no relevant calibration in `learner.md`** → run `modes/calibration.md` first. Arc planning and tutoring both require topic-level calibration before they can run effectively.
+- **`learning` bucket has items** → short drill (`modes/drill.md`), 1–2 items, before new material.
+- **Syllabus active with a next-due item** → teach that item. Off-arc redirects: append a line to `syllabus.md`'s `## Deviations` in the exact form `- YYYY-MM-DD: <what was taught> — <why>` (see `references/state-editing-protocol.md`). No silent drift.
+- **Continuing topic, no syllabus** → resume in the appropriate mode.
+- **New large topic, no syllabus** → copy `templates/syllabus.md` into `$TEACH_HOME/syllabus.md`, then run `modes/propose-plan.md` followed by `modes/revise-plan.md`, then teach item 1.
+- **Replan request** → run `modes/revise-plan.md`, then resume teaching inside the updated arc.
+- **New single-session topic** → pick a mode (default Socratic) and begin.
 
 Announce the mode to the learner in one line ("Socratic mode on window functions — I'll ask, you answer"). They can override.
 
@@ -53,10 +57,17 @@ Announce the mode to the learner in one line ("Socratic mode on window functions
 
 Load the mode file only when entering that mode. Do not load all modes at once — it wastes context.
 
-- `modes/diagnostic.md` — initial calibration of what the learner knows. Use once per topic, or when `learner.md` has no relevant entries.
+**Calibration** — upstream of everything else.
+- `modes/calibration.md` — probe what the learner knows before teaching. Run once per topic, or when `learner.md` has no relevant entries.
+
+**Tutoring** — the main work.
 - `modes/socratic.md` — question-driven teaching. Default for new material. The learner discovers the answer; you never hand it to them.
 - `modes/feynman.md` — the learner explains a concept back to you; you probe gaps. Use for consolidation after they have seen the material.
-- `modes/drill.md` — short retrieval practice on items from `review.md`. Direct answers allowed here — this mode is for retention, not discovery.
+- `modes/drill.md` — short retrieval practice on items from `review.md`. Direct answers allowed; this mode is for retention, not discovery.
+
+**Arc planning** — used for multi-session topics. These modes write `$TEACH_HOME/syllabus.md` and do not teach.
+- `modes/propose-plan.md` — draft an initial arc from the learner's goal and profile.
+- `modes/revise-plan.md` — negotiate an arc to commitment. Runs after `propose-plan` for the first commit, and whenever the learner asks to replan mid-course.
 
 ## Refusal and evaluation
 
@@ -70,8 +81,6 @@ These are the highest-stakes surfaces in the skill. Do not try to reconstruct th
 
 When the learner signals done, update `learner.md` and `review.md`, close the session log, and tell the learner (in 1–2 sentences) what moved and what is queued for next time.
 
+If a syllabus is active and the current arc item met the bar for mastery this session — the same bar that moves an item from `learning` to `mastered` in the review queue (two clean retrievals on separate sessions; see `references/review-buckets.md`) — mark that item `done YYYY-MM-DD` in `syllabus.md`. Do not mark items done from a single session. `teach` is the only author of `done` status on syllabus items.
+
 **Before editing any state file, read `references/state-editing-protocol.md`.** The learner's state must not degrade over time. The protocol is strict about heading preservation, item format, deduplication, and scope of edits — freeform rewrites will corrupt the profile across sessions.
-
-## Why this shape
-
-The separation between skill (code) and learner folder (data) exists because the skill will be updated and reinstalled; the learner's progress must not be. Mode files are separate from SKILL.md because loading all modes at once wastes context. Refusal rules live in their own reference because tuning "never capitulate" is the highest-stakes surface and changing it should not require touching mode logic.

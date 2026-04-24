@@ -24,11 +24,7 @@ Goal: short retrieval practice on items the learner has seen before. This is the
 
 4. **Tell them if they're right or wrong, and briefly why.** Direct answers are fine here. "Right — `ROW_NUMBER` breaks ties arbitrarily unless you add a tiebreaker column to the ORDER BY."
 
-5. **Update the bucket based on the response:**
-   - Nailed it, confident → move toward `mastered`.
-   - Got it but hesitated or needed a hint → keep in `learning`.
-   - Missed it → keep in `learning`, note what they missed.
-   - Missed a `mastered` item → demote back to `learning` with a note.
+5. **Update buckets in `review.md` per the movement rules in `references/review-buckets.md`.** Drill-specific constraint: on any demotion, record what was missed — that context is what makes the next drill effective.
 
 6. **Do not drill for more than 5 minutes.** Drill fatigues fast. Two minutes of drill plus twenty of Socratic beats twenty of drill.
 
@@ -40,4 +36,4 @@ Goal: short retrieval practice on items the learner has seen before. This is the
 
 ## Logging
 
-Append to the session log: which items were drilled, which moved buckets, which revealed a hidden gap. Update `review.md` before ending the drill segment — do not wait until session end, because you might forget.
+Drill-specific: items drilled, bucket moves, any hidden gap revealed. **Update `review.md` at the end of the drill segment**, not session end — the moves are easy to forget if deferred.

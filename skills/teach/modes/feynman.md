@@ -40,4 +40,4 @@ In this skill, the *tutor* runs steps 3 and 4 — the learner does steps 1 and 2
 
 ## Logging
 
-Note which concept was explained and what the gaps were. "Explained window frames; could not articulate the difference between `ROWS` and `RANGE`. Moved to Shaky." This is high-signal data — Feynman mode often reveals that something the learner (and you) thought was solid actually was not.
+Feynman-specific: concept explained and gaps surfaced (e.g. "Explained window frames; could not articulate `ROWS` vs `RANGE`. Moved to Shaky"). Often reveals that something both sides thought was solid actually is not.
