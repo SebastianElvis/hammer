@@ -57,8 +57,9 @@ The folder contains:
 
 ```
 ./.teach/
-├── learner.md        # your profile — known solid, shaky, misconceptions, currently studying
+├── learner.md        # your profile — currently studying, goal, known solid, shaky, misconceptions, calibration notes
 ├── review.md         # spaced-review queue (new / learning / mastered buckets)
+├── syllabus.md       # ordered arc for a multi-session topic (created only when needed)
 └── sessions/         # one markdown transcript per day
 ```
 
@@ -70,7 +71,9 @@ Everything is plain markdown. You can read it, edit it, back it up, sync it via 
 2. **Bootstrap.** Resolve `$TEACH_HOME`. On first use, seed it from [`templates/`](skills/teach/templates/). Never write back to the skill directory.
 3. **Read the learner.** Load `learner.md` and `review.md`, decide what kind of session this should be.
 4. **Pick a mode:**
-   - No profile, or a new topic → [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md): calibrate level *and* motivation.
+   - No profile, or a new topic → [`modes/calibration.md`](skills/teach/modes/calibration.md): calibrate level *and* motivation.
+   - Multi-session topic, no arc yet → [`modes/propose-plan.md`](skills/teach/modes/propose-plan.md) then [`modes/revise-plan.md`](skills/teach/modes/revise-plan.md): draft and commit an ordered arc.
+   - Replan request mid-course → [`modes/revise-plan.md`](skills/teach/modes/revise-plan.md): reshape the committed arc against what actually happened.
    - Review queue has items → [`modes/drill.md`](skills/teach/modes/drill.md): short retrieval practice.
    - New material → [`modes/socratic.md`](skills/teach/modes/socratic.md): default, question-driven. Answer-protection enforced by [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
    - Consolidating familiar material → [`modes/feynman.md`](skills/teach/modes/feynman.md): you explain it back, the tutor probes for gaps.
@@ -98,13 +101,13 @@ hammer/
 
 Hamming's contribution is not a technique but an orientation. *Learning to learn* is the skill that makes every other skill compound: if you cannot get better at acquiring new understanding, you plateau. And the specific *what* you choose to learn matters as much as the *how* — a tutor who only answers "what are you studying?" is a less useful tutor than one who, gently and occasionally, also asks "and why this, and why now?"
 
-This is why the skill has a diagnostic mode at the start of every new topic (calibration of motivation, not just level), and why session-end reflections ask what the learner wants to be able to do next time.
+This is why the skill has a calibration mode at the start of every new topic (of motivation, not just level), and why session-end reflections ask what the learner wants to be able to do next time.
 
 **Sources**:
 - Hamming, R. W. (1997). *The Art of Doing Science and Engineering: Learning to Learn.* Gordon and Breach. Republished by Stripe Press (2020) with a foreword by Bret Victor. The subtitle is this skill's founding premise; Chapter 1 ("Orientation") is the clearest statement of why meta-learning is the master skill.
 - Hamming, R. W. (1986). *You and Your Research* (Bell Communications Research Colloquium Seminar, March 7, 1986). In: Kaiser, J. F. (Ed.) (1986). *Transactions of the Bell Communications Research Colloquium Seminar.* The "important problems" heuristic: "What are the important problems in my field? What am I working on? Why aren't they the same thing?" — the single most load-bearing quote in the skill's design.
 
-**Where applied**: [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md), session-end reflection in [`SKILL.md`](skills/teach/SKILL.md).
+**Where applied**: [`modes/calibration.md`](skills/teach/modes/calibration.md), session-end reflection in [`SKILL.md`](skills/teach/SKILL.md).
 
 ### 2. Productive struggle — the learner must produce the answer
 
@@ -121,7 +124,7 @@ This principle covers the entire Socratic tradition (questions that force the le
 
 **Where applied**: [`modes/socratic.md`](skills/teach/modes/socratic.md), [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
 
-*Calibration mechanics — Vygotsky's "zone of proximal development" and Bloom's two-sigma finding — back the diagnostic mode empirically; they're not the philosophical spine, but they're what makes individualized Socratic teaching as effective as the data shows.*
+*Calibration mechanics — Vygotsky's "zone of proximal development" and Bloom's two-sigma finding — back the calibration mode empirically; they're not the philosophical spine, but they're what makes individualized Socratic teaching as effective as the data shows.*
 
 ### 3. Understanding is tested by explanation — and the learner is the easiest person to fool
 

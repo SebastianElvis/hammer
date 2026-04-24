@@ -37,16 +37,53 @@ Rules for the note:
 
 ## `learner.md` specific rules
 
-- The five canonical sections are: `Currently studying`, `Known solid`, `Shaky`, `Misconceptions caught`, `Diagnostic summaries`. Do not add new top-level sections without a skill-level reason.
+- The six canonical sections are, in this order: `Currently studying`, `Goal`, `Known solid`, `Shaky`, `Misconceptions caught`, `Calibration notes`. Do not add new top-level sections without a skill-level reason.
 - `Currently studying` is a single topic, not a list. Replace it when the topic shifts.
+- `Goal` is a single sentence stating what the learner wants to be able to *do* once they understand the current topic. Written by calibration mode. Paired with `Currently studying` — when the topic shifts, replace both together. `Goal` holds the motivation/terminal behavior; `Calibration notes` holds level/shape notes from each run. Do not conflate them.
 - `Misconceptions caught` entries should include both the wrong belief and the correction. Example: `- Thought PARTITION BY required ORDER BY — corrected 2026-04-20. In fact ORDER BY is required only for ranking functions.`
 - When an item moves from Shaky to Known solid (or vice versa), move the entire bullet line. Do not leave a ghost entry behind. Do not copy — move.
+
+### Older profiles missing the `Goal` section
+
+`Goal` was added to the canonical set after initial profiles were created. If you read a `learner.md` that has the other five canonical sections but no `Goal` heading:
+
+1. Tell the learner: "Your profile was created before we tracked a `Goal` field — want me to add it?"
+2. If yes, insert the `Goal` heading after `Currently studying` and populate it with the learner's answer.
+3. If no, proceed without it. Future sessions can offer again.
+
+This is the one allowed exception to the "never silently rewrite state" rule, and only with explicit learner consent — never autonomously.
 
 ## `review.md` specific rules
 
 - The three canonical buckets are: `new`, `learning`, `mastered`. Do not add others.
 - An item lives in exactly one bucket at a time. When moving, delete from the source bucket and add to the destination. No duplicates across buckets.
 - When demoting a `mastered` item back to `learning`, append a note explaining what was missed — that context is what makes the next drill effective.
+
+## `syllabus.md` specific rules
+
+- The four canonical sections are: `Goal`, `Non-goals`, `Arc`, `Deviations`. Do not add new top-level sections without a skill-level reason.
+- `Goal` is a single sentence. Replace it only when `revise-plan` mode concludes the goal has changed — otherwise leave it alone.
+- `Arc` items use a **numbered** list, not a bulleted one. Format:
+
+  ```
+  N. <concept, short noun phrase> — <status/date/note>
+  ```
+
+  Status vocabulary, use exactly these forms:
+  - `pending`
+  - `in progress since YYYY-MM-DD`
+  - `done YYYY-MM-DD`
+  - `deferred YYYY-MM-DD (reason)`
+
+- **Do not renumber the Arc list** when an item is deferred, dropped, or rewritten. Items keep their number for the life of the syllabus; numeric gaps are fine. Renumbering invalidates references in the Deviations log and in session logs. New items get the next unused number, not a reused one.
+- `done YYYY-MM-DD` is written **only at session end by tutoring sessions**, and only when the arc item meets the same mastery bar used for moving items from `learning` to `mastered` in the review queue (two clean retrievals on separate sessions). Planning modes (`propose-plan`, `revise-plan`) do not write `done` — those modes author the arc; tutoring sessions author progress.
+- `Deviations` is append-only. Format:
+
+  ```
+  - YYYY-MM-DD: <what was done instead> — <why>
+  ```
+
+  Never delete deviation entries. They are the evidence trail that tells `revise-plan` mode whether the arc still fits reality.
 
 ## Session logs
 

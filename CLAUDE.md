@@ -17,7 +17,7 @@ Both packagings point at the same `skills/teach/` directory; do not fork or dupl
 The hardest thing to get right in this repo is the boundary between the skill (shipped, read-only at runtime) and the learner's state (persistent, user-owned).
 
 - **Skill directory** (`skills/teach/`) — shipped content. `SKILL.md` is the thin entrypoint; `modes/*.md` are loaded on demand; `references/*.md` are authoritative policy; `templates/*.md` are seeds copied on first run.
-- **Learner folder** (`$TEACH_HOME`, default `~/.teach/`) — runtime state: `learner.md`, `review.md`, `sessions/YYYY-MM-DD.md`. Never inside this repo.
+- **Learner folder** (`$TEACH_HOME`, default `./.teach/` in the agent's cwd) — runtime state: `learner.md`, `review.md`, `syllabus.md` (optional, for multi-session topics), `sessions/YYYY-MM-DD.md`. Never inside this repo.
 
 **The skill must never write back to its own directory.** Templates are read-only seeds, copied once on first run into `$TEACH_HOME`. Any change to skill behavior that requires new persistent state must (a) update the template and (b) leave existing learner files intact. `.teach/` is gitignored as a safety net in case someone runs the skill from a clone.
 
@@ -25,7 +25,7 @@ The hardest thing to get right in this repo is the boundary between the skill (s
 
 `SKILL.md` is deliberately thin because everything it references costs context when loaded. Respect these rules when editing:
 
-- **Load modes on demand, not up front.** `SKILL.md` names the four modes but does not inline them. If you add a mode, follow the same pattern — one file, loaded only when entered.
+- **Load modes on demand, not up front.** `SKILL.md` names the modes but does not inline them. If you add a mode, follow the same pattern — one file, loaded only when entered.
 - **References are high-stakes policy, not tips.** `references/refusal-rules.md`, `evaluation-rubric.md`, `review-buckets.md`, and `state-editing-protocol.md` encode behaviors the agent must not reconstruct from memory. `SKILL.md` instructs the agent to re-read them at the relevant points; preserve that pattern.
 - **Don't merge modes or references into `SKILL.md`.** It would inflate every session's context even when the file isn't needed.
 
