@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 `hammer` is a skills repo, not an application. There is nothing to build, lint, or test — it ships plain markdown files that agents load on demand. Currently contains one skill: `teach` (a tutoring skill named after Richard Hamming).
 
 The repo is dual-packaged:
-- **`vercel-labs/skills` format** — installable via `npx skills add SebastianElvis/hammer --skill teach`.
+- **`vercel-labs/skills` format** — installable via `npx skills add SebastianElvis/hammer`.
 - **Claude Code plugin** — `.claude-plugin/marketplace.json` makes it `/plugin install`-able.
 
 Both packagings point at the same `skills/teach/` directory; do not fork or duplicate content to serve them separately.
@@ -35,7 +35,7 @@ The hardest thing to get right in this repo is the boundary between the skill (s
 
 ## Citations and intellectual honesty
 
-The README calls out that several popular attributions (e.g., the "Feynman technique" as a named four-step method) are reconstructions, not primary sources. If you extend the skill or add principles, cite the actual source of the idea rather than the popular handle, and distinguish philosophical spine from empirical backing (see the Vygotsky/Bloom footnote under principle 2).
+Several popular attributions (e.g., the "Feynman technique" as a named four-step method) are reconstructions, not primary sources. If you extend the skill or add principles, cite the actual source of the idea rather than the popular handle, and distinguish philosophical spine from empirical backing (see the Vygotsky/Bloom footnote under principle 2 in the README).
 
 ## Workflow
 
