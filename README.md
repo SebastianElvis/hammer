@@ -50,13 +50,13 @@ It will *not* fire on debugging help, one-shot factual lookups, or task executio
 
 The skill stores your learner profile outside the skill directory, so reinstalling or updating the skill never touches your data.
 
-- **Default location**: `~/.teach/`
-- **Override**: set `TEACH_HOME` to any path — useful for per-topic folders (`TEACH_HOME=~/.teach/spanish`).
+- **Default location**: `./.teach/` — the `.teach/` folder in the agent's current working directory. Learner state is scoped per project; `.teach/` is gitignored so it does not get committed.
+- **Override**: set `TEACH_HOME` to any path — useful for a cross-project profile (`TEACH_HOME=~/.teach`) or per-topic folders (`TEACH_HOME=~/.teach/spanish`).
 
 The folder contains:
 
 ```
-~/.teach/
+./.teach/
 ├── learner.md        # your profile — known solid, shaky, misconceptions, currently studying
 ├── review.md         # spaced-review queue (new / learning / mastered buckets)
 └── sessions/         # one markdown transcript per day
@@ -87,7 +87,7 @@ hammer/
         ├── SKILL.md            # trigger + orchestration (deliberately thin)
         ├── modes/              # one file per teaching mode, loaded on demand
         ├── references/         # policy: refusal, evaluation, review buckets, state protocol
-        └── templates/          # seeds copied to ~/.teach/ on first run
+        └── templates/          # seeds copied to ./.teach/ on first run
 ```
 
 ---
