@@ -25,7 +25,7 @@ State lives **outside this skill directory** in a folder the learner owns. This 
 
 **Resolve the learner folder**:
 1. If the environment variable `TEACH_HOME` is set, use that path.
-2. Otherwise, use `~/.teach`.
+2. Otherwise, use `./.teach` — the `.teach` folder in the agent's current working directory. This keeps learner state scoped to the project the learner is working in, and `.teach/` is already listed in `.gitignore`.
 
 **On first use** (folder does not exist):
 1. Create the folder and a `sessions/` subfolder inside it.
