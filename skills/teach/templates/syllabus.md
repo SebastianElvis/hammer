@@ -1,6 +1,6 @@
 # Syllabus: <topic>
 
-This file is the agreed learning arc for the topic named above. The tutor drafted it, you shaped it, both sides respect it. Ticking items off happens during teaching; reshaping happens by re-entering `revise-plan` mode.
+This file is the agreed learning arc for the topic named above. The tutor drafted it, you shaped it, both sides respect it. Ticking items off happens during teaching; reshaping happens by re-entering `prepare-syllabus` mode.
 
 ## Goal
 
@@ -16,7 +16,7 @@ _(Empty.)_
 
 Ordered list of concepts, from first to last. Items keep their number for the life of the syllabus — deferred or dropped items leave a numbered gap rather than being renumbered, so references in the Deviations log stay valid.
 
-_(Empty. Populated by `modes/propose-plan.md` and committed in `modes/revise-plan.md`.)_
+_(Empty. Populated and committed by `modes/prepare-syllabus.md`.)_
 
 ## Deviations
 

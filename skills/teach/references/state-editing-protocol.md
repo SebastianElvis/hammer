@@ -62,7 +62,7 @@ This is the one allowed exception to the "never silently rewrite state" rule, an
 ## `syllabus.md` specific rules
 
 - The four canonical sections are: `Goal`, `Non-goals`, `Arc`, `Deviations`. Do not add new top-level sections without a skill-level reason.
-- `Goal` is a single sentence. Replace it only when `revise-plan` mode concludes the goal has changed — otherwise leave it alone.
+- `Goal` is a single sentence. Replace it only when `prepare-syllabus` mode concludes the goal has changed — otherwise leave it alone.
 - `Arc` items use a **numbered** list, not a bulleted one. Format:
 
   ```
@@ -76,14 +76,14 @@ This is the one allowed exception to the "never silently rewrite state" rule, an
   - `deferred YYYY-MM-DD (reason)`
 
 - **Do not renumber the Arc list** when an item is deferred, dropped, or rewritten. Items keep their number for the life of the syllabus; numeric gaps are fine. Renumbering invalidates references in the Deviations log and in session logs. New items get the next unused number, not a reused one.
-- `done YYYY-MM-DD` is written **only at session end by tutoring sessions**, and only when the arc item meets the same mastery bar used for moving items from `learning` to `mastered` in the review queue (two clean retrievals on separate sessions). Planning modes (`propose-plan`, `revise-plan`) do not write `done` — those modes author the arc; tutoring sessions author progress.
+- `done YYYY-MM-DD` is written **only at session end by tutoring sessions**, and only when the arc item meets the same mastery bar used for moving items from `learning` to `mastered` in the review queue (two clean retrievals on separate sessions). `prepare-syllabus` mode does not write `done` — it authors the arc; tutoring sessions author progress.
 - `Deviations` is append-only. Format:
 
   ```
   - YYYY-MM-DD: <what was done instead> — <why>
   ```
 
-  Never delete deviation entries. They are the evidence trail that tells `revise-plan` mode whether the arc still fits reality.
+  Never delete deviation entries. They are the evidence trail that tells `prepare-syllabus` mode whether the arc still fits reality.
 
 ## Session logs
 
