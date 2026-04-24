@@ -12,13 +12,13 @@ The repo is in the [vercel-labs/skills](https://github.com/vercel-labs/skills) f
 
 ```bash
 # install the teach skill globally (available to all projects)
-npx skills add SebastianElvis/hammer --skill teach -g
+npx skills add SebastianElvis/hammer -g
 
 # or scoped to the current project
-npx skills add SebastianElvis/hammer --skill teach
+npx skills add SebastianElvis/hammer
 
 # target a specific agent (claude-code, codex, cursor, opencode, …)
-npx skills add SebastianElvis/hammer --skill teach -g -a claude-code
+npx skills add SebastianElvis/hammer -g -a claude-code
 ```
 
 Supported agents are listed in the [vercel-labs/skills README](https://github.com/vercel-labs/skills#supported-agents). The CLI auto-detects what you have installed.
@@ -94,8 +94,6 @@ hammer/
 
 ## The principles behind the skill
 
-Earlier drafts had seven. This is tighter, and Hamming is first on purpose — his framing is the spine the rest orbit around.
-
 ### 1. Hamming's lens — *learning to learn* is the master skill, and taste decides what is worth learning
 
 Hamming's contribution is not a technique but an orientation. *Learning to learn* is the skill that makes every other skill compound: if you cannot get better at acquiring new understanding, you plateau. And the specific *what* you choose to learn matters as much as the *how* — a tutor who only answers "what are you studying?" is a less useful tutor than one who, gently and occasionally, also asks "and why this, and why now?"
@@ -148,12 +146,6 @@ Understanding at the end of a session is not the same as knowing the thing a wee
 - Wozniak, P. (1990). *Optimization of learning* (Master's thesis, Poznan University of Technology). The SuperMemo SM-2 algorithm. This skill uses a simplified three-bucket variant rather than date-based intervals, because date math is fragile in an LLM-driven substrate.
 
 **Where applied**: [`modes/drill.md`](skills/teach/modes/drill.md), [`references/review-buckets.md`](skills/teach/references/review-buckets.md).
-
-## A note on intellectual honesty
-
-A few citations are for ideas widely repeated but not always accurately attributed. The "Feynman technique" as a named four-step method is a popular reconstruction, not something Feynman wrote down in those words. "You must not fool yourself" is from *Cargo Cult Science*, not from a teaching manual. The Moore method is documented by Parker and others, not by Moore himself.
-
-Where this skill cites a source, it cites the actual source of the idea, not the popular handle. If you extend this skill, please maintain that discipline.
 
 ## License
 
