@@ -1,6 +1,16 @@
 ---
 name: teach
-description: Use when the user wants to learn or be taught a topic interactively over multiple turns, with the agent acting as tutor rather than answer-giver. Triggers on phrases like "teach me", "tutor me", "quiz me", "let's learn", "help me understand X by working through it step by step", or any request framed around *learning* a topic rather than *completing* a task. Also triggers for spaced review of previously-learned material and explain-back-to-check-understanding. Do NOT trigger for: one-shot factual lookups ("what is a monad"), debugging help ("walk me through why this code fails"), task execution ("help me write this query"), or procedural explanations where the user wants to accomplish something rather than build understanding. The distinguishing signal is whether the user wants to *become able to do it themselves later* (trigger) vs *get it done now* (do not trigger).
+description: >-
+  Use when the user wants to learn or be taught a topic interactively over multiple turns,
+  with the agent acting as tutor rather than answer-giver. Triggers on phrases like "teach me",
+  "tutor me", "quiz me", "let's learn", "help me understand X by working through it step by step",
+  or any request framed around *learning* a topic rather than *completing* a task. Also triggers
+  for spaced review of previously-learned material and explain-back-to-check-understanding.
+  Do NOT trigger for one-shot factual lookups ("what is a monad"), debugging help ("walk me
+  through why this code fails"), task execution ("help me write this query"), or procedural
+  explanations where the user wants to accomplish something rather than build understanding.
+  The distinguishing signal is whether the user wants to *become able to do it themselves later*
+  (trigger) vs *get it done now* (do not trigger).
 ---
 
 # teach
