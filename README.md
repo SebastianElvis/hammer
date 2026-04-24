@@ -1,32 +1,112 @@
 # hammer
 
-Personal agent-skills repo. Currently contains one skill: **teach**.
+Personal agent-skills for learning. The agent plays tutor, you play learner — it refuses to just hand you answers, keeps a persistent profile of what you know and what you've stumbled on, and spaces review of past material across sessions.
 
-The repo is named for Richard Hamming. His *Art of Doing Science and Engineering: Learning to Learn* and the "You and Your Research" lecture are the spine of this project — not one influence among many, but the one the rest orbit around. The other sources below sharpen specific mechanics; Hamming sets the orientation.
+Currently ships one skill: **`teach`**. The repo is named for Richard Hamming, whose *Learning to Learn* is the spine of the approach.
 
-## The `teach` skill
+## Install
 
-An agent-skill (vercel-labs/skills format) that turns the agent into a tutor and the user into a learner. It is not a Q&A system — it is built on the claim, grounded in the work cited below, that understanding is produced by productive struggle, and that a helpful-seeming answer given too early is a theft disguised as a gift.
+The repo is in the [vercel-labs/skills](https://github.com/vercel-labs/skills) format and also carries a Claude Code plugin manifest, so you can install it via whichever path you prefer.
 
-Source: [`skills/teach/`](skills/teach/)
+### Via `npx skills` (any supported agent)
 
-Install: `npx skills add SebastianElvis/hammer --skill teach -g`
+```bash
+# install the teach skill globally (available to all projects)
+npx skills add SebastianElvis/hammer --skill teach -g
 
-## The four principles
+# or scoped to the current project
+npx skills add SebastianElvis/hammer --skill teach
 
-Earlier drafts had seven. This is tighter, and Hamming is first on purpose — his framing is the one the rest of the skill is answering to.
+# target a specific agent (claude-code, codex, cursor, opencode, …)
+npx skills add SebastianElvis/hammer --skill teach -g -a claude-code
+```
+
+Supported agents are listed in the [vercel-labs/skills README](https://github.com/vercel-labs/skills#supported-agents). The CLI auto-detects what you have installed.
+
+### As a Claude Code plugin
+
+This repo includes a `.claude-plugin/marketplace.json`, so Claude Code can install it as a plugin:
+
+```bash
+/plugin install https://github.com/SebastianElvis/hammer
+```
+
+### Manually
+
+Clone the repo and symlink `skills/teach/` into your agent's skills directory (e.g., `~/.claude/skills/teach` for Claude Code).
+
+## Usage
+
+Once installed, just talk to the agent the way you already do. The skill triggers automatically when you ask to *learn* something rather than *get something done*:
+
+- "teach me SQL window functions"
+- "let's learn Rust ownership — don't just explain, walk me through it"
+- "quiz me on what we covered last time"
+- "I want to understand how a Bloom filter works"
+
+It will *not* fire on debugging help, one-shot factual lookups, or task execution — those are not tutoring. See [`skills/teach/SKILL.md`](skills/teach/SKILL.md) for the full trigger definition.
+
+## Where your progress lives
+
+The skill stores your learner profile outside the skill directory, so reinstalling or updating the skill never touches your data.
+
+- **Default location**: `~/.teach/`
+- **Override**: set `TEACH_HOME` to any path — useful for per-topic folders (`TEACH_HOME=~/.teach/spanish`).
+
+The folder contains:
+
+```
+~/.teach/
+├── learner.md        # your profile — known solid, shaky, misconceptions, currently studying
+├── review.md         # spaced-review queue (new / learning / mastered buckets)
+└── sessions/         # one markdown transcript per day
+```
+
+Everything is plain markdown. You can read it, edit it, back it up, sync it via git/Dropbox — it's just text.
+
+## How a session flows
+
+1. **Trigger.** Agent matches your intent against [`SKILL.md`](skills/teach/SKILL.md). If it looks like *learning* rather than *getting something done*, the skill activates.
+2. **Bootstrap.** Resolve `$TEACH_HOME`. On first use, seed it from [`templates/`](skills/teach/templates/). Never write back to the skill directory.
+3. **Read the learner.** Load `learner.md` and `review.md`, decide what kind of session this should be.
+4. **Pick a mode:**
+   - No profile, or a new topic → [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md): calibrate level *and* motivation.
+   - Review queue has items → [`modes/drill.md`](skills/teach/modes/drill.md): short retrieval practice.
+   - New material → [`modes/socratic.md`](skills/teach/modes/socratic.md): default, question-driven. Answer-protection enforced by [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
+   - Consolidating familiar material → [`modes/feynman.md`](skills/teach/modes/feynman.md): you explain it back, the tutor probes for gaps.
+5. **Session end.** State files updated per [`references/state-editing-protocol.md`](skills/teach/references/state-editing-protocol.md) — strict rules that prevent profile corruption over time.
+
+## Repo layout
+
+```
+hammer/
+├── .claude-plugin/
+│   └── marketplace.json        # Claude Code plugin manifest
+└── skills/
+    └── teach/
+        ├── SKILL.md            # trigger + orchestration (deliberately thin)
+        ├── modes/              # one file per teaching mode, loaded on demand
+        ├── references/         # policy: refusal, evaluation, review buckets, state protocol
+        └── templates/          # seeds copied to ~/.teach/ on first run
+```
+
+---
+
+## The principles behind the skill
+
+Earlier drafts had seven. This is tighter, and Hamming is first on purpose — his framing is the spine the rest orbit around.
 
 ### 1. Hamming's lens — *learning to learn* is the master skill, and taste decides what is worth learning
 
 Hamming's contribution is not a technique but an orientation. *Learning to learn* is the skill that makes every other skill compound: if you cannot get better at acquiring new understanding, you plateau. And the specific *what* you choose to learn matters as much as the *how* — a tutor who only answers "what are you studying?" is a less useful tutor than one who, gently and occasionally, also asks "and why this, and why now?"
 
-This principle is why the skill has a diagnostic mode at the start of every new topic (not just a calibration of level, but of motivation), and why the session-end reflection asks the learner what they want to be able to do next time. The skill is trying, in small ways, to cultivate the learner's own taste and meta-learning — not just to transfer facts.
+This is why the skill has a diagnostic mode at the start of every new topic (calibration of motivation, not just level), and why session-end reflections ask what the learner wants to be able to do next time.
 
 **Sources**:
-- Hamming, R. W. (1997). *The Art of Doing Science and Engineering: Learning to Learn.* Gordon and Breach. Republished by Stripe Press (2020) with a foreword by Bret Victor. The subtitle *Learning to Learn* is this skill's founding premise; Chapter 1 ("Orientation") is the clearest statement of why meta-learning is the master skill.
-- Hamming, R. W. (1986). *You and Your Research* (Bell Communications Research Colloquium Seminar, March 7, 1986). In: Kaiser, J. F. (Ed.) (1986). *Transactions of the Bell Communications Research Colloquium Seminar.* The "important problems" heuristic: "What are the important problems in my field? What am I working on? Why aren't they the same thing?" This is the single most load-bearing quote in the skill's design.
+- Hamming, R. W. (1997). *The Art of Doing Science and Engineering: Learning to Learn.* Gordon and Breach. Republished by Stripe Press (2020) with a foreword by Bret Victor. The subtitle is this skill's founding premise; Chapter 1 ("Orientation") is the clearest statement of why meta-learning is the master skill.
+- Hamming, R. W. (1986). *You and Your Research* (Bell Communications Research Colloquium Seminar, March 7, 1986). In: Kaiser, J. F. (Ed.) (1986). *Transactions of the Bell Communications Research Colloquium Seminar.* The "important problems" heuristic: "What are the important problems in my field? What am I working on? Why aren't they the same thing?" — the single most load-bearing quote in the skill's design.
 
-**Where applied**: [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md) (Hamming's "why this topic?" is step 2 of diagnostic), the session-end reflection in [`SKILL.md`](skills/teach/SKILL.md), and the cultivation-of-taste framing throughout the skill.
+**Where applied**: [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md), session-end reflection in [`SKILL.md`](skills/teach/SKILL.md).
 
 ### 2. Productive struggle — the learner must produce the answer
 
@@ -35,56 +115,46 @@ The act of producing the answer is what creates understanding. Receiving the ans
 This principle covers the entire Socratic tradition (questions that force the learner to produce their own answer) as well as twentieth-century cognitive science showing that the *effort* of retrieval and reasoning is what produces durable memory, even when it feels less productive than being told.
 
 **Sources**:
-- Plato. *Meno* (c. 380 BCE). Translated by G.M.A. Grube (1976), Hackett Publishing. See 82b–85b — Socrates teaches a slave boy geometry by asking only questions. The foundational text for the claim that questioning outperforms telling.
-- Moore, R. L. (the "Moore method"). Documented in: Parker, J. (2005). *R. L. Moore: Mathematician and Teacher.* MAA. Moore refused to let his students read the textbook — they had to prove every theorem themselves. Extreme, but a clean statement of the principle.
-- Pólya, G. (1945). *How to Solve It: A New Aspect of Mathematical Method.* Princeton University Press. The four-stage framework (understand → plan → execute → look back) gives the principle a practical shape: the tutor's questions walk the learner through these stages rather than skip them.
-- Bjork, R. A., & Bjork, E. L. (2011). *Making things hard on oneself, but in a desirable way: Creating desirable difficulties to enhance learning.* In M. A. Gernsbacher et al. (Eds.), *Psychology and the real world.* Worth Publishers. "Desirable difficulties": effort, spacing, interleaving, and generation *improve* long-term retention by making short-term performance harder.
-- Roediger, H. L., & Karpicke, J. D. (2006). "Test-enhanced learning: Taking memory tests improves long-term retention." *Psychological Science*, 17(3), 249–255. The testing effect — retrieval outperforms rereading, even when rereading feels more productive in the moment.
+- Plato. *Meno* (c. 380 BCE). Translated by G.M.A. Grube (1976), Hackett Publishing. 82b–85b — Socrates teaches a slave boy geometry by asking only questions.
+- Moore, R. L. (the "Moore method"). Documented in: Parker, J. (2005). *R. L. Moore: Mathematician and Teacher.* MAA. Moore refused to let students read the textbook — they had to prove every theorem themselves.
+- Pólya, G. (1945). *How to Solve It.* Princeton University Press. The four-stage framework (understand → plan → execute → look back) gives the principle a practical shape.
+- Bjork, R. A., & Bjork, E. L. (2011). *Making things hard on oneself, but in a desirable way.* In M. A. Gernsbacher et al. (Eds.), *Psychology and the real world.* Worth Publishers. "Desirable difficulties": effort, spacing, interleaving, and generation improve long-term retention by making short-term performance harder.
+- Roediger, H. L., & Karpicke, J. D. (2006). "Test-enhanced learning." *Psychological Science*, 17(3), 249–255. The testing effect — retrieval outperforms rereading.
 
-**Where applied**: [`modes/socratic.md`](skills/teach/modes/socratic.md) (the whole mode), [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md) (the escalation ladder exists to preserve struggle rather than skip past it), [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md) (calibration mechanics via Vygotsky's ZPD and Bloom's 2-sigma — see below).
+**Where applied**: [`modes/socratic.md`](skills/teach/modes/socratic.md), [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
 
-*(Calibration mechanics — Vygotsky's "zone of proximal development" and Bloom's two-sigma finding on tutoring effectiveness — provide the empirical backing for why individualized Socratic teaching is so much more effective than group instruction. Citations on request; they are the empirical basis for the diagnostic mode but not the philosophical spine.)*
+*Calibration mechanics — Vygotsky's "zone of proximal development" and Bloom's two-sigma finding — back the diagnostic mode empirically; they're not the philosophical spine, but they're what makes individualized Socratic teaching as effective as the data shows.*
 
 ### 3. Understanding is tested by explanation — and the learner is the easiest person to fool
 
 A learner who can recite a definition but cannot recognize the concept when shown it does not understand it. A correct answer produced by bad reasoning is worse than a wrong one, because it hides the gap. The tutor's job is not just to ask — it is to listen for self-deception and surface it, gently, without letting it pass.
 
-This is the Feynman cluster, and it is the reason the skill treats "right answer, wrong reasoning" as a separate evaluation category instead of collapsing it into "correct."
+This is why the skill treats "right answer, wrong reasoning" as a separate evaluation category rather than collapsing it into "correct."
 
 **Sources**:
 - Feynman, R. P., Leighton, R. B., & Sands, M. (1963). *The Feynman Lectures on Physics*, Vol. 1, Preface. Addison-Wesley. The preface frames the lectures as Feynman explaining physics to *himself* — the test of understanding is the ability to teach.
-- Feynman, R. P. (1985). *"Surely You're Joking, Mr. Feynman!"*. Norton. See "O Americano, Outra Vez!" (the Brazil chapter) — case study of students who could recite the definition of polarized light but could not recognize it physically. The foundational anecdote for the fluency-without-recognition failure mode.
+- Feynman, R. P. (1985). *"Surely You're Joking, Mr. Feynman!"*. Norton. See "O Americano, Outra Vez!" — case study of students who could recite the definition of polarized light but could not recognize it physically.
 - Feynman, R. P. (1974). *Cargo Cult Science* (Caltech commencement address, reprinted in *Surely You're Joking* and elsewhere). "The first principle is that you must not fool yourself — and you are the easiest person to fool."
 
-**Where applied**: [`modes/feynman.md`](skills/teach/modes/feynman.md) (the whole mode — the learner explains, the tutor probes for gaps), [`references/evaluation-rubric.md`](skills/teach/references/evaluation-rubric.md) (the "right answer, wrong reasoning" category is the operational form of this principle).
+**Where applied**: [`modes/feynman.md`](skills/teach/modes/feynman.md), [`references/evaluation-rubric.md`](skills/teach/references/evaluation-rubric.md).
 
 ### 4. Retention requires retrieval over time
 
-Understanding at the end of a session is not the same as knowing the thing a week later. Without retrieval across a gap, knowledge decays on a predictable curve. The cure is spaced retrieval practice — the learner pulls the thing from memory, with effort, after a delay, repeatedly.
+Understanding at the end of a session is not the same as knowing the thing a week later. Without retrieval across a gap, knowledge decays on a predictable curve. The cure is spaced retrieval practice.
 
 **Sources**:
-- Ebbinghaus, H. (1885). *Über das Gedächtnis: Untersuchungen zur experimentellen Psychologie* (*Memory: A Contribution to Experimental Psychology*). The original forgetting curve — the first empirical demonstration that memory decays on a roughly logarithmic schedule without rehearsal.
-- Karpicke, J. D., & Roediger, H. L. (2008). "The critical importance of retrieval for learning." *Science*, 319(5865), 966–968. Shows that *retrieval*, not repeated study, is what produces long-term retention. Learners who study-study-study-study perform worse one week out than learners who study-test-test-test — even though the second group feels less confident at the time.
-- Wozniak, P. (1990). *Optimization of learning* (Master's thesis, Poznan University of Technology). The SuperMemo SM-2 algorithm — the canonical adaptive-interval scheduler. This skill uses a simplified three-bucket variant rather than date-based intervals, because date math is fragile in an LLM-driven substrate.
+- Ebbinghaus, H. (1885). *Über das Gedächtnis: Untersuchungen zur experimentellen Psychologie* (*Memory: A Contribution to Experimental Psychology*). The original forgetting curve.
+- Karpicke, J. D., & Roediger, H. L. (2008). "The critical importance of retrieval for learning." *Science*, 319(5865), 966–968. *Retrieval*, not repeated study, is what produces long-term retention. Learners who study-study-study-study perform worse one week out than learners who study-test-test-test — even though the second group feels less confident at the time.
+- Wozniak, P. (1990). *Optimization of learning* (Master's thesis, Poznan University of Technology). The SuperMemo SM-2 algorithm. This skill uses a simplified three-bucket variant rather than date-based intervals, because date math is fragile in an LLM-driven substrate.
 
-**Where applied**: [`modes/drill.md`](skills/teach/modes/drill.md) (retrieval practice is the mode's entire purpose), [`references/review-buckets.md`](skills/teach/references/review-buckets.md) (bucket logic, derived from SM-2 but simplified for a markdown-only state file).
-
-## How a session flows
-
-Reading the skill top-down misses the shape. Here is the actual path through the files when a session runs:
-
-1. **Trigger.** The agent matches the user's intent against the `description` in [`SKILL.md`](skills/teach/SKILL.md). If it looks like *learning*, not *getting something done*, the skill activates.
-2. **Bootstrap.** The agent resolves `$TEACH_HOME` (default `~/.teach/`) and, on first use, seeds it from [`templates/`](skills/teach/templates/). Nothing is ever written back to the skill directory — personal progress lives outside the skill so it survives reinstalls.
-3. **Read the learner.** The agent reads `learner.md` (profile) and `review.md` (review queue) from `$TEACH_HOME`. Then it decides what kind of session this should be.
-4. **Pick a mode.** Four modes, chosen by what the state says:
-   - No profile, or a new topic → [`modes/diagnostic.md`](skills/teach/modes/diagnostic.md): calibrate level *and* motivation (principle 1), sparingly ask a few probing questions (principle 2 warm-up).
-   - Review queue has items → [`modes/drill.md`](skills/teach/modes/drill.md): short retrieval practice on items the learner has already seen (principle 4).
-   - New material → [`modes/socratic.md`](skills/teach/modes/socratic.md): the default, question-driven teaching (principle 2). Answer-protection enforced by [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
-   - Consolidating a topic the learner has seen → [`modes/feynman.md`](skills/teach/modes/feynman.md): the learner explains back, the tutor probes for gaps (principle 3). Scoring uses [`references/evaluation-rubric.md`](skills/teach/references/evaluation-rubric.md).
-5. **Session end.** State files are updated according to [`references/state-editing-protocol.md`](skills/teach/references/state-editing-protocol.md) — strict rules that prevent silent corruption of the profile over time. The session log is closed with a short reflection.
+**Where applied**: [`modes/drill.md`](skills/teach/modes/drill.md), [`references/review-buckets.md`](skills/teach/references/review-buckets.md).
 
 ## A note on intellectual honesty
 
-A few of these citations are for ideas that are widely repeated but not always accurately attributed. The "Feynman technique" as a named four-step method is a popular reconstruction, not something Feynman wrote down in those words — the *spirit* is in the Lectures preface and the Brazil chapter, but the explicit procedure is not. "You must not fool yourself" is from *Cargo Cult Science*, not from a teaching manual. The Moore method is documented by Parker and others, not by Moore himself.
+A few citations are for ideas widely repeated but not always accurately attributed. The "Feynman technique" as a named four-step method is a popular reconstruction, not something Feynman wrote down in those words. "You must not fool yourself" is from *Cargo Cult Science*, not from a teaching manual. The Moore method is documented by Parker and others, not by Moore himself.
 
 Where this skill cites a source, it cites the actual source of the idea, not the popular handle. If you extend this skill, please maintain that discipline.
+
+## License
+
+No license specified yet — treat as all rights reserved until one is added.
