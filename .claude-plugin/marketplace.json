@@ -1,0 +1,10 @@
+{
+  "metadata": { "pluginRoot": "./" },
+  "plugins": [
+    {
+      "name": "hammer",
+      "source": ".",
+      "skills": ["./skills/teach"]
+    }
+  ]
+}
