@@ -157,4 +157,4 @@ Where this skill cites a source, it cites the actual source of the idea, not the
 
 ## License
 
-No license specified yet — treat as all rights reserved until one is added.
+[MIT](LICENSE).
