@@ -67,17 +67,32 @@ Everything is plain markdown. You can read it, edit it, back it up, sync it via 
 
 ## How a session flows
 
+The lifecycle runs linearly: **calibration → prepare-syllabus → teach loop**. Each upstream phase is either run or skipped based on state; teaching is always last.
+
+```
+┌────────┐   ┌─────────────┐   ┌──────────────────┐   ┌──────────────────┐   ┌────────┐
+│ START  │   │ CALIBRATION │   │ PREPARE-SYLLABUS │   │   TEACH LOOP     │   │  END   │
+│        │──▶│             │──▶│                  │──▶│                  │──▶│        │
+│ read   │   │  skip if    │   │   skip if no     │   │ drill ⇄ socratic │   │ update │
+│ state  │   │  calibrated │   │   arc needed     │   │        ⇅         │   │ state  │
+│        │   │             │   │                  │   │     feynman      │   │        │
+└────────┘   └─────────────┘   └──────────────────┘   └──────────────────┘   └────────┘
+```
+
+Invariant inside the teach loop: answer-protection on the current target question persists across mode switches — a mode switch is not a way out of a stuck Socratic question. See [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
+
+Step by step:
+
 1. **Trigger.** Agent matches your intent against [`SKILL.md`](skills/teach/SKILL.md). If it looks like *learning* rather than *getting something done*, the skill activates.
 2. **Bootstrap.** Resolve `$TEACH_HOME`. On first use, seed it from [`templates/`](skills/teach/templates/). Never write back to the skill directory.
-3. **Read the learner.** Load `learner.md` and `review.md`, decide what kind of session this should be.
-4. **Pick a mode:**
-   - No profile, or a new topic → [`modes/calibration.md`](skills/teach/modes/calibration.md): calibrate level *and* motivation.
-   - Multi-session topic, no arc yet → [`modes/propose-plan.md`](skills/teach/modes/propose-plan.md) then [`modes/revise-plan.md`](skills/teach/modes/revise-plan.md): draft and commit an ordered arc.
-   - Replan request mid-course → [`modes/revise-plan.md`](skills/teach/modes/revise-plan.md): reshape the committed arc against what actually happened.
+3. **Read state.** Load `learner.md`, `review.md`, and `syllabus.md` (if present).
+4. **Gate 1 — Calibration.** Run [`modes/calibration.md`](skills/teach/modes/calibration.md) if no profile, or the current topic has no relevant calibration. Otherwise skip. Calibrates level *and* motivation.
+5. **Gate 2 — Prepare syllabus.** Run [`modes/prepare-syllabus.md`](skills/teach/modes/prepare-syllabus.md) if this is a new multi-session topic with no arc yet, or the learner asks to replan mid-course. Otherwise skip. Drafts or reshapes the committed arc.
+6. **Teach loop.** Pick whichever tutoring mode fits the learner's state, and switch between them as the session unfolds:
    - Review queue has items → [`modes/drill.md`](skills/teach/modes/drill.md): short retrieval practice.
    - New material → [`modes/socratic.md`](skills/teach/modes/socratic.md): default, question-driven. Answer-protection enforced by [`references/refusal-rules.md`](skills/teach/references/refusal-rules.md).
    - Consolidating familiar material → [`modes/feynman.md`](skills/teach/modes/feynman.md): you explain it back, the tutor probes for gaps.
-5. **Session end.** State files updated per [`references/state-editing-protocol.md`](skills/teach/references/state-editing-protocol.md) — strict rules that prevent profile corruption over time.
+7. **Session end.** State files updated per [`references/state-editing-protocol.md`](skills/teach/references/state-editing-protocol.md) — strict rules that prevent profile corruption over time.
 
 ## Repo layout
 

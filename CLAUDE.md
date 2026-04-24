@@ -29,6 +29,16 @@ The hardest thing to get right in this repo is the boundary between the skill (s
 - **References are high-stakes policy, not tips.** `references/refusal-rules.md`, `evaluation-rubric.md`, `review-buckets.md`, and `state-editing-protocol.md` encode behaviors the agent must not reconstruct from memory. `SKILL.md` instructs the agent to re-read them at the relevant points; preserve that pattern.
 - **Don't merge modes or references into `SKILL.md`.** It would inflate every session's context even when the file isn't needed.
 
+## Mode lifecycle (two gates + teach loop)
+
+The teach skill's runtime shape has two upstream gates and one tutoring loop. `SKILL.md`'s decision tree is organized around this shape; preserve it when editing.
+
+- **Calibration gate** (`modes/calibration.md`) — run once per topic. Everything downstream consumes the calibrated profile, so planning and teaching both require it first.
+- **Syllabus planning gate** (`modes/prepare-syllabus.md`) — run once for multi-session topics, and again on replan. Authors `syllabus.md`; does not teach. Holds both first-draft and revise shapes in a single file.
+- **Teach loop** (`modes/socratic.md`, `modes/feynman.md`, `modes/drill.md`) — the agent picks the tutoring mode per turn based on learner state. Switching mid-session is expected, not exceptional. The only hard constraint inside the loop is answer-protection on the current target (see `references/refusal-rules.md`).
+
+If you add a mode, classify it as a gate or a tutoring mode and update `SKILL.md`'s decision tree accordingly. Do not hard-code ordering rules between tutoring modes — they interleave by judgment. The cross-cutting invariant (answer-protection persists across mode switches) lives in `references/refusal-rules.md`; preserve the pattern of `SKILL.md` pointing to it rather than restating it.
+
 ## State-editing discipline
 
 `references/state-editing-protocol.md` exists because freeform edits to `learner.md` / `review.md` corrupt the profile over many sessions (heading drift, duplicates, format breakage, scope creep). If you change how state is edited — new fields, new buckets, new headings — update the protocol file and the templates together, and check the change doesn't silently break profiles written under the old schema.
