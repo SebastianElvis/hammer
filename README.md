@@ -25,11 +25,14 @@ Supported agents are listed in the [vercel-labs/skills README](https://github.co
 
 ### As a Claude Code plugin
 
-This repo includes a `.claude-plugin/marketplace.json`, so Claude Code can install it as a plugin:
+This repo doubles as a Claude Code [plugin marketplace](https://code.claude.com/docs/en/discover-plugins). Add the marketplace, then install the `hammer` plugin:
 
 ```bash
-/plugin install https://github.com/SebastianElvis/hammer
+/plugin marketplace add SebastianElvis/hammer
+/plugin install hammer@hammer
 ```
+
+After installing, run `/reload-plugins` to activate it.
 
 ### Manually
 
