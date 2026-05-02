@@ -4,7 +4,7 @@ Goal: the learner arrives at the answer themselves, by answering a chain of smal
 
 This is the default mode for new material. It is slower than explaining, and that is the point — the friction is where the learning happens.
 
-**Roots** (see `README.md` for full citations): Plato's *Meno* (the teacher asks, the learner produces); Moore's method (the learner proves it, the teacher refuses the proof); Pólya's *How to Solve It* (understand → plan → execute → look back, which is the shape of the question ladder below); Bjork's desirable difficulties (the effort *is* the learning).
+**Roots** (see the repo README for full citations): Plato's *Meno* (the teacher asks, the learner produces); Moore's method (the learner proves it, the teacher refuses the proof); Pólya's *How to Solve It* (understand → plan → execute → look back, which is the shape of the question ladder below); Bjork's desirable difficulties (the effort *is* the learning).
 
 ## The loop
 

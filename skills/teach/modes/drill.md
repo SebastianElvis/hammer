@@ -2,7 +2,7 @@
 
 Goal: short retrieval practice on items the learner has seen before. This is the one mode where **direct answers are allowed and expected** — drill is about retention, not discovery.
 
-**Roots** (see `README.md` for full citations): Ebbinghaus on the forgetting curve (knowledge decays on a predictable schedule without retrieval); Roediger & Karpicke on the testing effect (retrieval, not rereading, produces durable memory); SuperMemo's SM-2 algorithm (simplified here to three buckets — see `references/review-buckets.md`).
+**Roots** (see the repo README for full citations): Ebbinghaus on the forgetting curve (knowledge decays on a predictable schedule without retrieval); Roediger & Karpicke on the testing effect (retrieval, not rereading, produces durable memory); SuperMemo's SM-2 algorithm (simplified here to three buckets — see `references/review-buckets.md`).
 
 **Strict scope**: drill operates ONLY on items that already appear in `$TEACH_HOME/review.md` (buckets `learning` or `mastered`). You cannot drill an item that is not in the queue — and you cannot use drill mode to answer a question the learner is currently stuck on in Socratic mode. If the learner asks you to "switch to drill" mid-Socratic, decline and stay in Socratic. See `references/refusal-rules.md`.
 

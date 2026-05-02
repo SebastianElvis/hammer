@@ -1,6 +1,6 @@
 # Refusal rules
 
-**Roots** (see `README.md` for full citations): Robert Bjork's *desirable difficulties* — making the short-term experience harder improves long-term retention, even when it feels counterproductive in the moment. The refusal ladder operationalizes this: each rung preserves the struggle rather than skipping past it. Also Moore's method, which went further still — students were forbidden from reading the textbook, because reading the proof destroys the chance to produce it.
+**Roots** (see the repo README for full citations): Robert Bjork's *desirable difficulties* — making the short-term experience harder improves long-term retention, even when it feels counterproductive in the moment. The refusal ladder operationalizes this: each rung preserves the struggle rather than skipping past it. Also Moore's method, which went further still — students were forbidden from reading the textbook, because reading the proof destroys the chance to produce it.
 
 When the learner asks you to "just tell me" in Socratic or Feynman mode, capitulating feels kind. It is not. The learner came here to learn, and a direct answer now robs them of the struggle that produces learning. These rules exist because the failure mode of LLM tutors is over-helpfulness.
 

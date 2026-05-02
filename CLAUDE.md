@@ -16,10 +16,10 @@ Both packagings point at the same `skills/teach/` directory; do not fork or dupl
 
 The hardest thing to get right in this repo is the boundary between the skill (shipped, read-only at runtime) and the learner's state (persistent, user-owned).
 
-- **Skill directory** (`skills/teach/`) — shipped content. `SKILL.md` is the thin entrypoint; `modes/*.md` are loaded on demand; `references/*.md` are authoritative policy; `templates/*.md` are seeds copied on first run.
+- **Skill directory** (`skills/teach/`) — shipped content. `SKILL.md` is the thin entrypoint; `modes/*.md` are loaded on demand; `references/*.md` are authoritative policy; `assets/*.md` are seeds copied on first run.
 - **Learner folder** (`$TEACH_HOME`, default `./.teach/` in the agent's cwd) — runtime state: `learner.md`, `review.md`, `syllabus.md` (optional, for multi-session topics), `sessions/YYYY-MM-DD.md`. Never inside this repo.
 
-**The skill must never write back to its own directory.** Templates are read-only seeds, copied once on first run into `$TEACH_HOME`. Any change to skill behavior that requires new persistent state must (a) update the template and (b) leave existing learner files intact. `.teach/` is gitignored as a safety net in case someone runs the skill from a clone.
+**The skill must never write back to its own directory.** Asset files are read-only seeds, copied once on first run into `$TEACH_HOME`. Any change to skill behavior that requires new persistent state must (a) update the asset seed and (b) leave existing learner files intact. `.teach/` is gitignored as a safety net in case someone runs the skill from a clone.
 
 ## Context discipline (why the skill is split the way it is)
 
@@ -41,11 +41,29 @@ If you add a mode, classify it as a gate or a tutoring mode and update `SKILL.md
 
 ## State-editing discipline
 
-`references/state-editing-protocol.md` exists because freeform edits to `learner.md` / `review.md` corrupt the profile over many sessions (heading drift, duplicates, format breakage, scope creep). If you change how state is edited — new fields, new buckets, new headings — update the protocol file and the templates together, and check the change doesn't silently break profiles written under the old schema.
+`references/state-editing-protocol.md` exists because freeform edits to `learner.md` / `review.md` corrupt the profile over many sessions (heading drift, duplicates, format breakage, scope creep). If you change how state is edited — new fields, new buckets, new headings — update the protocol file and the asset seeds together, and check the change doesn't silently break profiles written under the old schema.
 
 ## Citations and intellectual honesty
 
 Several popular attributions (e.g., the "Feynman technique" as a named four-step method) are reconstructions, not primary sources. If you extend the skill or add principles, cite the actual source of the idea rather than the popular handle, and distinguish philosophical spine from empirical backing (see the Vygotsky/Bloom footnote under principle 2 in the README).
+
+## Agent Skills spec & best practices
+
+This repo follows the Agent Skills spec (https://agentskills.io/specification) and its companion guides on best practices (https://agentskills.io/skill-creation/best-practices) and description optimization (https://agentskills.io/skill-creation/optimizing-descriptions). Edits must keep the skill conformant.
+
+**Spec-level invariants:**
+- `SKILL.md` requires YAML frontmatter with `name` (lowercase alphanumeric + hyphens, ≤64 chars, matches parent directory) and `description` (≤1024 chars). Optional: `license`, `compatibility`, `metadata`, `allowed-tools`.
+- Canonical optional directories are `scripts/`, `references/`, and `assets/`. Templates and seed files belong in `assets/`, not `templates/`.
+- `SKILL.md` should stay under ~500 lines / 5,000 tokens. Push detail into `references/` or `assets/` and tell the agent *when* to load each file (progressive disclosure).
+
+**Description (the trigger surface):**
+- Imperative ("Use when…"), focused on user intent, explicit about both should-trigger and should-not-trigger cases. The current description encodes the learning-vs-task-execution distinction; preserve that shape on edits.
+- When changing the description, treat it as a triggering change: re-check the ≤1024-char limit and the negative-trigger list, not just the positive examples.
+
+**Content discipline:**
+- Add what the agent wouldn't already know (project-specific conventions, gotchas, exact procedures); omit general background.
+- Prefer defaults over menus, procedures over one-shot answers, and concrete templates over prose descriptions of format.
+- Match prescriptiveness to fragility: be strict where order/consistency matters (state edits, gate ordering, refusal rules), looser where judgment is appropriate (mode interleaving inside the teach loop).
 
 ## Workflow
 
