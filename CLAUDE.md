@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`hammer` is a skills repo, not an application. There is nothing to build, lint, or test — it ships plain markdown files that agents load on demand. Currently contains one skill: `teach` (a tutoring skill named after Richard Hamming).
+`hammer` is a skills repo. The shipped artifact is plain markdown: agents load it on demand, there is nothing to build or lint. Currently contains one skill: `teach` (a tutoring skill named after Richard Hamming).
+
+There is also a Python eval harness in `evals/` (see "Evals" below). It is **not** part of the shipped skill — it exists to validate skill behavior against scripted scenarios. Don't import or reference `evals/` from `skills/`.
 
 The repo is dual-packaged:
 - **`vercel-labs/skills` format** — installable via `npx skills add SebastianElvis/hammer`.
@@ -64,6 +66,31 @@ This repo follows the Agent Skills spec (https://agentskills.io/specification) a
 - Add what the agent wouldn't already know (project-specific conventions, gotchas, exact procedures); omit general background.
 - Prefer defaults over menus, procedures over one-shot answers, and concrete templates over prose descriptions of format.
 - Match prescriptiveness to fragility: be strict where order/consistency matters (state edits, gate ordering, refusal rules), looser where judgment is appropriate (mode interleaving inside the teach loop).
+
+## Evals
+
+`evals/` runs the `teach` skill against scripted multi-turn scenarios and grades each trial with a mix of code and LLM-judge graders. It uses the **Claude CLI** (`claude -p`) for both the agent under test and the judge — no `ANTHROPIC_API_KEY`. See `evals/README.md` for layout and how to add tasks.
+
+**Canonical methodology reference:** Anthropic's [*Demystifying evals for AI agents*](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents). When designing or extending eval coverage, treat this as authoritative — the harness is built around its vocabulary (task / trial / grader / transcript / outcome), grader hierarchy (code > judge > human), capability vs regression split, and `pass@k` / `pass^k` consistency metrics. Specifically:
+
+- **Favor deterministic graders.** Use code graders for anything mechanically checkable (token leaks, file layout, schema validity); reserve LLM-judges for genuinely subjective surfaces (ladder adherence, reasoning quality).
+- **Give judges an `"unknown"` escape hatch** and grade one dimension at a time — separate prompts per behavior beat one holistic "is this good".
+- **Capability evals start at low pass rates; regression evals stay near 100%.** Don't conflate them; keep refresh paths different.
+- **Class-balance positive and negative cases.** Every "agent should refuse" task needs a "agent should comply" twin.
+- **Calibrate against humans periodically.** When a code grader and judge disagree on a transcript, that disagreement is the calibration signal — usually the rule is under-specified.
+
+**The eval surface tracks the policy surface, not the code.** Most of `skills/teach/` is markdown that names rules ("don't state the answer", "MCQ with the answer is disclosure", category-3 right-answer-wrong-reasoning). The graders are the only thing checking those rules at runtime. So:
+
+- **When you tighten a rule in `references/`, also tighten the matching judge prompt under `evals/graders/judge/`.** If the agent could pass the judge while violating the rule, the judge is wrong. The smoke run that produced this eval found exactly this gap: `refusal-rules.md` forbade prose-form answer leaks but not MCQ-form, and the judge inherited the gap.
+- **When you change `state-editing-protocol.md`, update or add code graders** under `evals/graders/code/` (heading set, item format, dedup) — those are mechanically checkable and shouldn't be left to a judge.
+- **Prefer code graders for anything mechanical.** Judges are for genuinely subjective surfaces (ladder adherence, reasoning probing). Code/judge disagreement on a transcript is a real signal — usually the rule is under-specified.
+
+Operational invariants:
+
+- **The agent model is pinned per task** (`"model": "opus"` default). Re-runs across model versions are not "the same eval"; they are a different eval. Don't unpin to chase cost.
+- **`evals/` writes nothing to `skills/`.** The harness uses scripted `$TEACH_HOME` fixtures under `evals/fixtures/teach_home/`. Adding new state shapes to a fixture does not change the asset seeds; the asset-seed contract still owns first-run behavior.
+- **`reports/` is gitignored.** Transcripts contain learner content and verdicts; don't commit them.
+- **Self-consistency:** before scaling a new judge prompt, re-grade a frozen transcript K times via `python evals/regrade.py <task.json> <transcript.md> --k 5`. Unstable judges are useless even if their median verdict is right.
 
 ## Workflow
 
