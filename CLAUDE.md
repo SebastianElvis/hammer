@@ -49,7 +49,7 @@ Several popular attributions (e.g., the "Feynman technique" as a named four-step
 
 ## Agent Skills spec & best practices
 
-This repo follows the Agent Skills spec (https://agentskills.io/specification) and its companion guides on best practices (https://agentskills.io/skill-creation/best-practices) and description optimization (https://agentskills.io/skill-creation/optimizing-descriptions). Edits must keep the skill conformant.
+This repo follows the Agent Skills spec (https://agentskills.io/specification) and its companion guides on best practices (https://agentskills.io/skill-creation/best-practices) and description optimization (https://agentskills.io/skill-creation/optimizing-descriptions). See also Anthropic's complete guide to building skills for Claude (https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf). Edits must keep the skill conformant.
 
 **Spec-level invariants:**
 - `SKILL.md` requires YAML frontmatter with `name` (lowercase alphanumeric + hyphens, ≤64 chars, matches parent directory) and `description` (≤1024 chars). Optional: `license`, `compatibility`, `metadata`, `allowed-tools`.
