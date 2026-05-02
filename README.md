@@ -103,13 +103,25 @@ Step by step:
 hammer/
 ├── .claude-plugin/
 │   └── marketplace.json        # Claude Code plugin manifest
-└── skills/
-    └── teach/
-        ├── SKILL.md            # trigger + orchestration (deliberately thin)
-        ├── modes/              # one file per teaching mode, loaded on demand
-        ├── references/         # policy: refusal, evaluation, review buckets, state protocol
-        └── assets/             # seeds copied to ./.teach/ on first run
+├── skills/
+│   └── teach/
+│       ├── SKILL.md            # trigger + orchestration (deliberately thin)
+│       ├── modes/              # one file per teaching mode, loaded on demand
+│       ├── references/         # policy: refusal, evaluation, review buckets, state protocol
+│       └── assets/             # seeds copied to ./.teach/ on first run
+└── evals/                      # eval harness for the skill (dev-only, not shipped)
 ```
+
+## Evals
+
+The skill ships markdown rules ("don't state the answer", "category-3 right-answer-wrong-reasoning"); `evals/` is what actually checks those rules hold under pressure. It runs the skill against scripted multi-turn scenarios and grades each trial with a mix of code-based and LLM-judge graders. Uses the Claude CLI — no API key required.
+
+```bash
+python evals/run.py refusal --trials 3            # run the refusal pack
+python evals/regrade.py <task> <transcript> --k 5 # check judge stability on a frozen transcript
+```
+
+Methodology follows Anthropic's [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents). See [`evals/README.md`](evals/README.md) for layout, how to add tasks, fixtures, and graders, and the cost note.
 
 ---
 
