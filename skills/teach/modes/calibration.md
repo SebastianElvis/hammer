@@ -2,7 +2,7 @@
 
 Goal: in 5–10 minutes, figure out roughly what the learner knows about the topic they named, so future sessions can start at the right level. Output is a populated `learner.md`, not teaching. This mode is upstream of tutoring and of planning — everything downstream depends on calibration landing first.
 
-**Roots** (see `README.md` for full citations): Vygotsky's zone of proximal development (teaching is most effective in the band between what the learner can do alone and what they can do with help — you have to find the band before you can teach in it); Bloom's "2 sigma" result on tutoring (individualized calibration is most of why tutoring beats group instruction); Hamming's *You and Your Research* ("why this, and why now?" — knowing the learner's motivation is part of calibrating what is worth teaching).
+**Roots** (see the repo README for full citations): Vygotsky's zone of proximal development (teaching is most effective in the band between what the learner can do alone and what they can do with help — you have to find the band before you can teach in it); Bloom's "2 sigma" result on tutoring (individualized calibration is most of why tutoring beats group instruction); Hamming's *You and Your Research* ("why this, and why now?" — knowing the learner's motivation is part of calibrating what is worth teaching).
 
 ## How to run it
 

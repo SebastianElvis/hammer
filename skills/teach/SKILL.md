@@ -23,16 +23,18 @@ This skill maintains a persistent learner profile and review queue across sessio
 
 State lives **outside this skill directory** in a folder the learner owns. This keeps personal progress safe from skill updates and portable across agents.
 
-**Resolve the learner folder**:
+**Resolve the learner folder** (call the result `$TEACH_HOME` from here on, even if the env var was unset):
 1. If the environment variable `TEACH_HOME` is set, use that path.
-2. Otherwise, use `./.teach` — the `.teach` folder in the agent's current working directory. This keeps learner state scoped to the project the learner is working in, and `.teach/` is already listed in `.gitignore`.
+2. Otherwise, treat `$TEACH_HOME` as `./.teach` — the `.teach` folder in the agent's current working directory. This keeps learner state scoped to the project the learner is working in, and `.teach/` is already listed in `.gitignore`.
+
+All later `$TEACH_HOME/...` paths in this file refer to the resolved path from this step.
 
 **On first use** (folder does not exist):
 1. Create the folder and a `sessions/` subfolder inside it.
-2. Copy `templates/learner.md` and `templates/review.md` from this skill into the learner folder.
+2. Copy `assets/learner.md` and `assets/review.md` from this skill into the learner folder.
 3. Tell the learner where the folder is, so they know their data is there.
 
-**Never write to this skill's directory.** Templates are read-only seeds.
+**Never write to this skill's directory.** Asset files are read-only seeds.
 
 ## Session start — always do this first
 
@@ -45,7 +47,7 @@ Then decide what to do. The lifecycle runs linearly: **calibration → prepare-s
 
 **Gate 1 — Calibration.** Run `modes/calibration.md` if the profile is empty, or the current topic has no relevant calibration in `learner.md`. Skip if the topic is already calibrated. Everything downstream consumes the calibrated profile, so this gate is upstream of both planning and teaching. `prepare-syllabus` refuses to run on an uncalibrated topic and will redirect back here — keeping the gates in order avoids that bounce.
 
-**Gate 2 — Prepare syllabus.** Run `modes/prepare-syllabus.md` if this is a new multi-session topic with no syllabus (copy `templates/syllabus.md` into `$TEACH_HOME/syllabus.md` first), or if the learner asks to replan mid-course. Skip for single-session topics, or continuing arcs with no replan request.
+**Gate 2 — Prepare syllabus.** Run `modes/prepare-syllabus.md` if this is a new multi-session topic with no syllabus (copy `assets/syllabus.md` into `$TEACH_HOME/syllabus.md` first), or if the learner asks to replan mid-course. Skip for single-session topics, or continuing arcs with no replan request.
 
 **Teach loop.** Once both gates have been resolved (run or skipped), pick whichever tutoring mode fits the learner's current state, and switch between them within a session as the state changes.
 

@@ -1,6 +1,6 @@
 # Evaluation rubric
 
-**Roots** (see `README.md` for full citations): Feynman's *Cargo Cult Science* — "the first principle is that you must not fool yourself — and you are the easiest person to fool." The evaluation rubric exists to catch self-deception, especially in the "right answer, wrong reasoning" category — the one that *looks like* success and *is* failure.
+**Roots** (see the repo README for full citations): Feynman's *Cargo Cult Science* — "the first principle is that you must not fool yourself — and you are the easiest person to fool." The evaluation rubric exists to catch self-deception, especially in the "right answer, wrong reasoning" category — the one that *looks like* success and *is* failure.
 
 When the learner answers, classify the response into one of four categories. Each routes to a different next move. The classification is the most important judgment you make in a session — it decides what happens next.
 

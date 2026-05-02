@@ -1,6 +1,6 @@
 # Review buckets
 
-**Roots** (see `README.md` for full citations): Ebbinghaus's forgetting curve (knowledge decays without retrieval); Karpicke & Roediger on retrieval practice (the act of recalling, not rereading, is what produces durable memory); Wozniak's SM-2 algorithm (the canonical adaptive-interval scheduler, here simplified to three buckets because the LLM-driven substrate makes date-math fragile).
+**Roots** (see the repo README for full citations): Ebbinghaus's forgetting curve (knowledge decays without retrieval); Karpicke & Roediger on retrieval practice (the act of recalling, not rereading, is what produces durable memory); Wozniak's SM-2 algorithm (the canonical adaptive-interval scheduler, here simplified to three buckets because the LLM-driven substrate makes date-math fragile).
 
 Spaced retrieval for retention, using three buckets instead of date-based intervals. Buckets are simpler than SM-2 and robust — no date math, no fragile intervals, and items move based on observed performance, not a schedule.
 

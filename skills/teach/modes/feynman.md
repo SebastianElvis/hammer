@@ -2,7 +2,7 @@
 
 Goal: the learner explains a concept back to you, and you probe their explanation for gaps. This is a *consolidation* mode — use it after they have already seen the material, not for first exposure.
 
-**Roots** (see `README.md` for full citations): Feynman's *Lectures on Physics* preface (teaching as the test of one's own understanding); Feynman's *"Surely You're Joking"* Brazil chapter (fluency-without-recognition as the failure mode to detect); Feynman's *Cargo Cult Science* ("you must not fool yourself — and you are the easiest person to fool," which is the guiding principle for what to probe).
+**Roots** (see the repo README for full citations): Feynman's *Lectures on Physics* preface (teaching as the test of one's own understanding); Feynman's *"Surely You're Joking"* Brazil chapter (fluency-without-recognition as the failure mode to detect); Feynman's *Cargo Cult Science* ("you must not fool yourself — and you are the easiest person to fool," which is the guiding principle for what to probe).
 
 ## The four steps (the technique, as Feynman practiced it)
 

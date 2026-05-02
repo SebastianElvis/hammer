@@ -84,7 +84,7 @@ Invariant inside the teach loop: answer-protection on the current target questio
 Step by step:
 
 1. **Trigger.** Agent matches your intent against [`SKILL.md`](skills/teach/SKILL.md). If it looks like *learning* rather than *getting something done*, the skill activates.
-2. **Bootstrap.** Resolve `$TEACH_HOME`. On first use, seed it from [`templates/`](skills/teach/templates/). Never write back to the skill directory.
+2. **Bootstrap.** Resolve `$TEACH_HOME`. On first use, seed it from [`assets/`](skills/teach/assets/). Never write back to the skill directory.
 3. **Read state.** Load `learner.md`, `review.md`, and `syllabus.md` (if present).
 4. **Gate 1 — Calibration.** Run [`modes/calibration.md`](skills/teach/modes/calibration.md) if no profile, or the current topic has no relevant calibration. Otherwise skip. Calibrates level *and* motivation.
 5. **Gate 2 — Prepare syllabus.** Run [`modes/prepare-syllabus.md`](skills/teach/modes/prepare-syllabus.md) if this is a new multi-session topic with no arc yet, or the learner asks to replan mid-course. Otherwise skip. Drafts or reshapes the committed arc.
@@ -105,7 +105,7 @@ hammer/
         ├── SKILL.md            # trigger + orchestration (deliberately thin)
         ├── modes/              # one file per teaching mode, loaded on demand
         ├── references/         # policy: refusal, evaluation, review buckets, state protocol
-        └── templates/          # seeds copied to ./.teach/ on first run
+        └── assets/             # seeds copied to ./.teach/ on first run
 ```
 
 ---

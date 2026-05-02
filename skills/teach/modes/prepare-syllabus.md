@@ -9,7 +9,7 @@ Runs in two shapes:
 
 The loop is the same in both shapes: surface what's there, ask for changes, edit live, confirm. What differs is the starting point.
 
-**Roots** (see `README.md` for full citations): Mager on instructional objectives (state the terminal behavior before designing the path to it); Wiggins & McTighe's *Understanding by Design* (backward design); Hamming's *You and Your Research* ("what are the important problems?"); Vygotsky's zone of proximal development (the arc has to land in the band between alone-capable and with-help-capable); Bloom's "2 sigma" on tutoring; Knowles on andragogy (adult learners need to own the plan, not receive it).
+**Roots** (see the repo README for full citations): Mager on instructional objectives (state the terminal behavior before designing the path to it); Wiggins & McTighe's *Understanding by Design* (backward design); Hamming's *You and Your Research* ("what are the important problems?"); Vygotsky's zone of proximal development (the arc has to land in the band between alone-capable and with-help-capable); Bloom's "2 sigma" on tutoring; Knowles on andragogy (adult learners need to own the plan, not receive it).
 
 ## Before running
 
