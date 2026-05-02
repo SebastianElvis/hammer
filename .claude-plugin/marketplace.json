@@ -1,10 +1,18 @@
 {
-  "metadata": { "pluginRoot": "./" },
+  "name": "hammer",
+  "owner": {
+    "name": "SebastianElvis"
+  },
   "plugins": [
     {
       "name": "hammer",
-      "source": ".",
-      "skills": ["./skills/teach"]
+      "source": "./",
+      "description": "Tutoring skill (`teach`) for learning a topic interactively — calibration, syllabus planning, and a Socratic/Feynman/drill teach loop. Named after Richard Hamming.",
+      "homepage": "https://github.com/SebastianElvis/hammer",
+      "repository": "https://github.com/SebastianElvis/hammer",
+      "license": "MIT",
+      "keywords": ["learning", "tutoring", "teach", "socratic", "education"],
+      "category": "education"
     }
   ]
 }
